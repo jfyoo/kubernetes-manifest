@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: wp-dep 
+  labels:
+    app: wp-dep
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: wp-dep
+  template:
+    metadata:
+      labels:
+        app: wp-dep
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress:6
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 1 
+            memory: 1024Mi
+          requests:
+            cpu: 100m 
+            memory: 100Mi
+        startupProbe:
+          periodSeconds: 5
+          tcpSocket:
+            port: 80
+        livenessProbe:
+          periodSeconds: 10
+          tcpSocket:
+            port: 80
+        readinessProbe:
+          periodSeconds: 15
+          tcpSocket:
+            port: 80
+        ports:
+        - containerPort: 80
+        envFrom:
+        - prefix: 'WORDPRESS_DB_'
+          configMapRef:
+            name: wp-cm

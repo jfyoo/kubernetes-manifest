@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: http-app-dep
+  name: http-app-dep
+  annotations:
+    kubernetes.io/change-cause: version=v3 
+spec:
+  replicas: 4
+  minReadySeconds: 30
+  selector:
+    matchLabels:
+      app: http-app-dep
+  template:
+    metadata:
+      labels:
+        app: http-app-dep
+    spec:
+      volumes:
+      - name: nginx-vol
+        configMap:
+          name: nginx-conf
+      containers:
+      - image: nginx:1.24.0 
+        name: http-app 
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d 
+          name: nginx-vol
+        

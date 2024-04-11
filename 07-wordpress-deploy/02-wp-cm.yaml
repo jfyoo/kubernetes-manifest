@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wp-cm 
+data:
+  HOST: '100.100.239.19'
+  USER: 'wordpress'
+  PASSWORD: '123456'
+  NAME: 'db_wordpress'

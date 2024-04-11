@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-pod
+  labels:
+    app: wordpress
+    role: database
+spec:
+  containers:
+  - name: wp-mysql 
+    image: mysql:5.7 
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 3306
+    env:
+      - name: MYSQL_DATABASE 
+        valueFrom:
+          configMapKeyRef:
+            name: mysql-cm 
+            key: MYSQL_DATABASE 
+      - name: MYSQL_USER 
+        valueFrom:
+          configMapKeyRef:
+            name: mysql-cm 
+            key: MYSQL_USER 
+      - name: MYSQL_PASSWORD 
+        valueFrom:
+          configMapKeyRef:
+            name: mysql-cm 
+            key: MYSQL_PASSWORD 
+      - name: MYSQL_ROOT_PASSWORD 
+        valueFrom:
+          configMapKeyRef:
+            name: mysql-cm 
+            key: MYSQL_ROOT_PASSWORD 

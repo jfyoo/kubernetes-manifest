@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: http-app-dep
+  name: http-app-dep
+spec:
+  minReadySeconds: 30 
+  replicas: 4
+  selector:
+    matchLabels:
+      app: http-app-dep
+  template:
+    metadata:
+      labels:
+        app: http-app-dep
+    spec:
+      containers:
+      - image: registry.cn-beijing.aliyuncs.com/xxhf/http-app:v2
+        name: http-app 

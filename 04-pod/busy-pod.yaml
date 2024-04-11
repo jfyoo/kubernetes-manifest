@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busy-pod
+  labels:
+    owner: xxhf
+    env: dev
+    region: beijing
+    tier: back
+spec:
+  containers:
+  - image: busybox:latest
+    name: busy
+    imagePullPolicy: IfNotPresent
+    env:
+      - name: name
+        value: "xinxianghf"
+      - name: address
+        value: "beijing"
+    command:
+      - /bin/echo
+    args:
+      - "NAME=$(name), ADDRESS=$(address)"
+  restartPolicy: OnFailure 
+

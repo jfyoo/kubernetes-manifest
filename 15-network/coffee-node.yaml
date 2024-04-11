@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coffee-node
+  template:
+    metadata:
+      labels:
+        app: coffee-node
+    spec:
+      containers:
+      - name: coffee-node
+        image: reg.xinxianghf.cloud/library/nginx-hello:plain-text 
+        ports:
+        - containerPort: 8080
+      nodeName: worker-01 

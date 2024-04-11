@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-app-dep
+  labels:
+    app: http-app-dep
+  annotations:
+    kubernetes.io/change-cause: version=v3 
+spec:
+  minReadySeconds: 15
+  replicas: 4
+  selector:
+    matchLabels:
+      app: http-app-dep
+  template:
+    metadata:
+      labels:
+        app: http-app-dep
+    spec:
+      containers:
+      - image: registry.cn-beijing.aliyuncs.com/xxhf/http-app:v3
+        name: http-app 

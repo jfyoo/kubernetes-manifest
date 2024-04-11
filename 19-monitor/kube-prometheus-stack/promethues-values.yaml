@@ -1,0 +1,8 @@
+global:
+  rbac:
+    create: true
+
+  ## Global image registry to use if it needs to be overriden for some specific use cases (e.g local registries, custom images, ...)
+  ##
+  imageRegistry: ""
+

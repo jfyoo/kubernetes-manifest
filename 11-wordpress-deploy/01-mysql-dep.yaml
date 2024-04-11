@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-cm 
+data:
+  DATABASE: 'db_wordpress'
+  USER: 'wordpress'
+  PASSWORD: '123456'
+  ROOT_PASSWORD: '123456'
+
+---
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: wp-mysql 
+  labels:
+    app: wordpress
+    role: database
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: wp-mysql
+  template:
+    metadata:
+      labels:
+        app: wp-mysql
+    spec:
+      containers:
+      - name: wp-mysql 
+        image: mysql:5.7 
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 1 
+            memory: 2048Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        startupProbe:
+          periodSeconds: 15
+          tcpSocket:
+            port: 3306 
+        livenessProbe:
+          periodSeconds: 10
+          tcpSocket:
+            port: 3306 
+        readinessProbe:
+          periodSeconds: 15
+          tcpSocket:
+            port: 3306 
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - prefix: 'MYSQL_'
+          configMapRef:
+            name: mysql-cm
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-mysql-svc
+  labels:
+spec:
+  selector:
+    app: wp-mysql 
+  ports:
+  - port: 3306 
+    targetPort: 3306 
+    protocol: TCP
+    name: http
+

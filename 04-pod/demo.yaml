@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: my-ns
+  name: demo-pod
+  #namespace: default 
+  labels: 
+    env: dev
+    app: app-name 
+    tier: front
+    region: bj
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.22.1
+    - name: redis 
+      image: redis:latest

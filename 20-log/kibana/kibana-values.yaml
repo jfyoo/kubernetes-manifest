@@ -1,0 +1,32 @@
+elasticsearchHosts: "http://elasticsearch-master:9200"
+
+image: "docker.elastic.co/kibana/kibana"
+imageTag: "7.17.3"
+imagePullPolicy: "IfNotPresent"
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "1Gi"
+  limits:
+    cpu: "1000m"
+    memory: "2Gi"
+
+service:
+  type: NodePort 
+  loadBalancerIP: ""
+  port: 5601
+  nodePort: ""
+  labels: {}
+  annotations:
+    {}
+    # cloud.google.com/load-balancer-type: "Internal"
+    # service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+    # service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    # service.beta.kubernetes.io/openstack-internal-load-balancer: "true"
+    # service.beta.kubernetes.io/cce-load-balancer-internal-vpc: "true"
+  loadBalancerSourceRanges:
+    []
+    # 0.0.0.0/0
+  httpPortName: http
+

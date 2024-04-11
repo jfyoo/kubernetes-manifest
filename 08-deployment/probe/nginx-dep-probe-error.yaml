@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ngx-dep-prob-error
+  name: ngx-dep-prob-error
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngx-dep-prob-error
+  template:
+    metadata:
+      labels:
+        app: ngx-dep-prob-error
+    spec:
+      volumes:
+      - name: ngx-conf-vol
+        configMap:
+          name: ngx-conf
+      containers:
+      - image: nginx:1.22.1
+        name: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: ngx-conf-vol
+        startupProbe:
+          periodSeconds: 2
+          exec:
+            command: ["cat", "/var/run/nginx.pid"]
+        livenessProbe:
+          periodSeconds: 10
+          tcpSocket:
+            port: 8080
+        readinessProbe:
+          periodSeconds: 5 
+          httpGet:
+            path: /ready
+            port: 80

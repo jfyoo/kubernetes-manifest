@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coffee-master
+  template:
+    metadata:
+      labels:
+        app: coffee-master
+    spec:
+      containers:
+      - name: coffee-master
+        image: reg.xinxianghf.cloud/library/nginx-hello:plain-text 
+        ports:
+        - containerPort: 8080
+      nodeName: master-01
